@@ -1,0 +1,68 @@
+﻿@page
+@using Microsoft.AspNetCore.Identity
+@using kursach3.Models
+@model kursach3.Pages.RolePlay.IndexModel
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<form asp-page="./Index" method="get">
+    <div class="form-actions no-color">
+        <p>
+            Find by name:
+            <input type="text" name="SearchString" value="@Model.CurrentFilter" />
+            <input type="submit" value="Search" class="btn btn-primary" /> |
+            <a asp-page="./Index">Back to full List</a>
+        </p>
+    </div>
+</form>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.RolePlaysViewModel[0].Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RolePlaysViewModel[0].Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RolePlaysViewModel[0].MasterUsername)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RolePlaysViewModel[0].CharacterName)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.RolePlaysViewModel) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MasterUsername)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CharacterName)
+            </td>
+            <td>            
+            @if (item.MasterUsername == User.Identity?.Name)
+                    {
+@*                         <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> 
+                         @:|*@
+                         <a asp-page="./AddNewPlayer" asp-route-id="@item.Id">Add New Player</a> 
+                         @:|
+                    }
+                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-page="./Chat" asp-route-id="@item.Id">Chat</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

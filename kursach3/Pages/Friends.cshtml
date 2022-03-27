@@ -1,0 +1,62 @@
+﻿@page
+@model kursach3.Pages.FriendsModel
+
+@{
+    ViewData["Title"] = "Friends";
+}
+
+<h1>My Friends</h1>
+
+<p>
+    <a asp-page="FindPeople">Find new friends</a>
+</p>
+<form asp-page="./Index" method="get">
+    <div class="form-actions no-color">
+        <p>
+            Find by name:
+            <input type="text" name="SearchString" value="@Model.CurrentFilter" />
+            <input type="submit" value="Search" class="btn btn-primary" /> |
+            <a asp-page="./Friends">Back to full List</a>
+        </p>
+    </div>
+</form>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.FriendViewModel[0].UserName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FriendViewModel[0].Bio)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FriendViewModel[0].Confirmed)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FriendViewModel[0].Timestamp)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.FriendViewModel) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Bio)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Confirmed)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Timestamp)
+            </td>
+            <td>
+                <a asp-page="./UserAccount" asp-route-id="@item.Id">View User Account</a> 
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

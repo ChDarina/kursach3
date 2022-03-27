@@ -1,0 +1,60 @@
+﻿@page
+@model kursach3.Pages.IndexModel
+
+<p>
+    <a asp-page="./Feed/Create">Create New</a>
+</p>
+<form asp-page="./Index" method="get">
+    <div class="form-actions no-color">
+        <p>
+            Find by Description:
+            <input type="text" name="SearchString" value="@Model.CurrentFilter" />
+            <input type="submit" value="Search" class="btn btn-primary" /> |
+            <a asp-page="./Index">Back to full List</a>
+        </p>
+    </div>
+</form>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.FeedView[0].UserName)
+            </th>            
+            <th>
+@*                <a asp-page="./Index" asp-route-sortOrder="@Model.NameSort">*@
+                    @Html.DisplayNameFor(model => model.FeedView[0].Title)
+@*                </a>*@
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FeedView[0].Content)
+            </th>
+            <th>
+@*                <a asp-page="./Index" asp-route-sortOrder="@Model.DateSort">*@
+                    @Html.DisplayNameFor(model => model.FeedView[0].Timestamp)
+@*                </a>*@
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.FeedView) {
+        <tr>            
+            <td>
+                @Html.DisplayFor(modelItem => item.UserName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Content)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Timestamp)
+            </td>
+            <td>
+                <a asp-page="./UserAccount" asp-route-id="@item.UserId">View User Account</a> 
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

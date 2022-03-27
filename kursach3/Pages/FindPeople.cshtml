@@ -1,0 +1,46 @@
+﻿@page
+@model kursach3.Pages.FindPeopleModel
+
+@{
+    ViewData["Title"] = "FindPeople";
+}
+
+<h1>Find People</h1>
+<form asp-page="./Index" method="get">
+    <div class="form-actions no-color">
+        <p>
+            Find by name:
+            <input type="text" name="SearchString" value="@Model.CurrentFilter" />
+            <input type="submit" value="Search" class="btn btn-primary" /> |
+            <a asp-page="./FindPeople">Back to full List</a>
+        </p>
+    </div>
+</form>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.AppUserViewModel[0].UserName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AppUserViewModel[0].Bio)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.AppUserViewModel) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Bio)
+            </td>
+            <td>
+                <a asp-page="./UserAccount" asp-route-id="@item.Id">View User Account</a> 
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
