@@ -1,5 +1,7 @@
 ﻿$(document).ready(function () {
     var connection = new signalR.HubConnectionBuilder().withUrl("/chatHub").build();
+    var id_temp = document.getElementById('searcher');
+    var id = id_temp.getAttribute('data-search');
 
     connection.start().then(function () {
         console.log('SignalR Started...')
@@ -71,6 +73,7 @@
         self.chatMessages = ko.observableArray([]);
         self.joinedRoom = ko.observable("");
         self.joinedRoomId = ko.observable("");
+        self.roleplayId = id;
         self.serverInfoMessage = ko.observable("");
         self.myName = ko.observable("");
         self.myAvatar = ko.observable("avatar1.png");
@@ -134,7 +137,8 @@
         }
 
         self.roomList = function () {
-            fetch('/api/Rooms')
+            var roleplayId = self.roleplayId;
+            fetch('/api/Rooms/' + roleplayId)
                 .then(response => response.json())
                 .then(data => {
                     self.chatRooms.removeAll();
@@ -161,8 +165,9 @@
         }
 
         self.createRoom = function () {
+            var roleplayId = self.roleplayId;
             var roomName = $("#roomName").val();
-            fetch('/api/Rooms', {
+            fetch('/api/Rooms/' + roleplayId, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ name: roomName })

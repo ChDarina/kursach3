@@ -35,25 +35,25 @@ namespace kursach3.Controllers
             _hubContext = hubContext;
         }
         public RolePlay RolePlay { get; set; }
-        public async Task<IEnumerable<Room>> ListRoom()
+        public async Task<IEnumerable<Room>> ListRoom(int id)
         {
-            //var RolePlays = await _context.RolePlays.ToListAsync();
-            //RolePlay = RolePlays.FirstOrDefault(r => r.RolePlayId == id);
-            var rooms = await _context.Rooms.ToListAsync();
-            //rooms = (List<Room>)rooms.Where(r => r.RolePlayId == id);
+            var RolePlays = await _context.RolePlays.ToListAsync();
+            RolePlay = RolePlays.FirstOrDefault(r => r.RolePlayId == id);
+            var all_rooms = await _context.Rooms.ToListAsync();
+            var rooms = all_rooms.Where(r => r.RolePlayId == id);
             return rooms;
         }
 
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<RoomViewModel>>> Get()
+        [HttpGet("{id}")]
+        public async Task<ActionResult<IEnumerable<RoomViewModel>>> Get(int id)
         {
-            var rooms = await ListRoom();
+            var rooms = await ListRoom(id);
             var roomsViewModel = _mapper.Map<IEnumerable<Room>, IEnumerable<RoomViewModel>>(rooms);
             return Ok(roomsViewModel);
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Room>> Get(int id)
+        //[HttpGet("{id}")]
+        public async Task<ActionResult<Room>> GetRoom(int id)
         {
             var room = await _context.Rooms.FindAsync(id);
             if (room == null)
@@ -63,17 +63,17 @@ namespace kursach3.Controllers
             return Ok(roomViewModel);
         }
 
-        [HttpPost]
-        public async Task<ActionResult<Room>> Create(RoomViewModel roomViewModel)
+        [HttpPost("{id}")]
+        public async Task<ActionResult<Room>> Create(RoomViewModel roomViewModel, int id)
         {
             if (_context.Rooms.Any(r => r.Name == roomViewModel.Name))
                 return BadRequest("Invalid room name or room already exists");
 
             var user = _context.Users.FirstOrDefault(u => u.UserName == User.Identity.Name);
-            var RolePlay = _context.RolePlays.FirstOrDefault(u => u.RolePlayId == 1);
+            var RolePlay = _context.RolePlays.FirstOrDefault(u => u.RolePlayId == id);
             var room = new Room
             {
-                RolePlayId = 1,
+                RolePlayId = id,
                 RolePlay = RolePlay,
                 Name = roomViewModel.Name,
                 Admin = user,
@@ -84,7 +84,7 @@ namespace kursach3.Controllers
 
             await _hubContext.Clients.All.SendAsync("addChatRoom", new { id = room.Id, name = room.Name });
 
-            return CreatedAtAction(nameof(Get), new { id = room.Id }, new { id = room.Id, name = room.Name });
+            return CreatedAtAction(nameof(GetRoom), new { id = room.Id }, new { id = room.Id, name = room.Name });
         }
 
         [HttpPut("{id}")]

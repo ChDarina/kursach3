@@ -9,6 +9,7 @@ namespace kursach3.Pages
     public class ChatModel : PageModel
     {
         private readonly ILogger<ChatModel> _logger;
+        public int chat_id;
 
         public ChatModel(ILogger<ChatModel> logger)
         {
@@ -16,9 +17,9 @@ namespace kursach3.Pages
 
         }
 
-        public void OnGet()
+        public void OnGet(int id)
         {
-
+            chat_id = id;
         }
     }
 }

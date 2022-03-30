@@ -204,6 +204,7 @@
     <script src="~/lib/knockout/knockout-latest.min.js"></script>
     <script src="~/js/signalr/dist/browser/signalr.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-    <script src="~/js/chat.js" asp-append-version="true"></script>
+    <script id='searcher' data-search=@Model.chat_id src="~/js/chat.js" asp-append-version="true">
+    </script>
     <script src="~lib/bootstrap/js/bootstrap.js" asp-append-version="true"></script>
 }

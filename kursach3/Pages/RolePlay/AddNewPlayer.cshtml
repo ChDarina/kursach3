@@ -14,7 +14,8 @@
                 <select asp-for="Character.UserId" class ="form-control" asp-items="ViewBag.UserId"></select>
             </div>
             <div class="form-group">
-            <input type="hidden" asp-for="Character.RolePlayId" />
+                <input type="hidden" asp-for="Character.RolePlayId" value = "@Model._roleplay.RolePlayId" />
+                <input type="hidden" asp-for="Character.RolePlay" value = "@Model._roleplay" />
             </div>
             <div class="form-group">
                 <label asp-for="Character.СharacterName" class="control-label"></label>

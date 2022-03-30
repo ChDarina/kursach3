@@ -28,7 +28,7 @@ namespace kursach3.Pages.RolePlay
         public IActionResult OnGet(int id)
         {
             var userId = _userManager.GetUserId(User);
-            var roleplay = _context.RolePlays.Where(m => m.RolePlayId == id);
+            var roleplay = _context.RolePlays.FirstOrDefault(m => m.RolePlayId == id);
             var friends = _context.Friends.Where(m => m.UserId == userId || m.UserFriendId == userId);
             var characters = _context.Characters.Where(m => m.RolePlayId == id);
             
@@ -65,13 +65,14 @@ namespace kursach3.Pages.RolePlay
             }
             if (users.Count != 0)
             {
-                ViewData["RolePlayId"] = new SelectList(roleplay, "RolePlayId", "Name");
+                _roleplay = roleplay;
                 ViewData["UserId"] = new SelectList(users, "Id", "UserName");
                 return Page();
             }
             ErrorMessage = String.Format("No friends awailable to add!");
             return RedirectToPage("./Index");
         }
+        public Models.RolePlay _roleplay { get; set; }
 
         [BindProperty]
         public Character Character { get; set; }
