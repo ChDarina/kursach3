@@ -9,9 +9,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using kursach3.Data;
 using kursach3.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace kursach3.Pages.RolePlay
 {
+    [Authorize]
     public class AddNewPlayerModel : PageModel
     {
         private readonly UserManager<ApplicationUser> _userManager;

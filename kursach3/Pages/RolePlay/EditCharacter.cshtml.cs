@@ -9,9 +9,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using kursach3.Data;
 using kursach3.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace kursach3.Pages.RolePlay
 {
+    [Authorize]
     public class EditCharacterModel : PageModel
     {
         private readonly kursach3.Data.ApplicationDbContext _context;

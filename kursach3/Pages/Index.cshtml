@@ -1,16 +1,15 @@
 ﻿@page
 @model kursach3.Pages.IndexModel
 
-<p>
-    <a asp-page="./Feed/Create">Create New</a>
-</p>
+<h1>New RolePlays</h1>
 <form asp-page="./Index" method="get">
     <div class="form-actions no-color">
         <p>
             Find by Description:
             <input type="text" name="SearchString" value="@Model.CurrentFilter" />
             <input type="submit" value="Search" class="btn btn-primary" /> |
-            <a asp-page="./Index">Back to full List</a>
+            <a asp-page="./Index">Back to full List</a> |
+            <a asp-page="./Feed/Create">Create New</a>
         </p>
     </div>
 </form>
@@ -18,20 +17,24 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.FeedView[0].UserName)
+                <a asp-page="./Index" asp-route-sortOrder="@Model.UserNameSort" asp-route-currentFilter="@Model.CurrentFilter">
+                    @Html.DisplayNameFor(model => model.FeedView[0].UserName)
+                </a>
             </th>            
             <th>
-@*                <a asp-page="./Index" asp-route-sortOrder="@Model.NameSort">*@
+                <a asp-page="./Index" asp-route-sortOrder="@Model.TitleSort" asp-route-currentFilter="@Model.CurrentFilter">
                     @Html.DisplayNameFor(model => model.FeedView[0].Title)
-@*                </a>*@
+                </a>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.FeedView[0].Content)
+                <a asp-page="./Index" asp-route-sortOrder="@Model.ContentSort" asp-route-currentFilter="@Model.CurrentFilter">
+                    @Html.DisplayNameFor(model => model.FeedView[0].Content)
+                </a>
             </th>
             <th>
-@*                <a asp-page="./Index" asp-route-sortOrder="@Model.DateSort">*@
+                <a asp-page="./Index" asp-route-sortOrder="@Model.DateSort" asp-route-currentFilter="@Model.CurrentFilter">
                     @Html.DisplayNameFor(model => model.FeedView[0].Timestamp)
-@*                </a>*@
+                </a>
             </th>
             <th></th>
         </tr>
@@ -40,7 +43,7 @@
 @foreach (var item in Model.FeedView) {
         <tr>            
             <td>
-                @Html.DisplayFor(modelItem => item.UserName)
+                <a asp-page="./UserAccount" asp-route-id="@item.UserId">@item.UserName</a> 
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Title)
@@ -51,10 +54,26 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Timestamp)
             </td>
-            <td>
-                <a asp-page="./UserAccount" asp-route-id="@item.UserId">View User Account</a> 
-            </td>
         </tr>
 }
     </tbody>
 </table>
+@{
+    var prevDisabled = !Model.FeedView.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.FeedView.HasNextPage ? "disabled" : "";
+}
+
+<a asp-page="./Index"
+   asp-route-sortOrder="@Model.CurrentSort"
+   asp-route-pageIndex="@(Model.FeedView.PageIndex - 1)"
+   asp-route-currentFilter="@Model.CurrentFilter"
+   class="btn btn-primary @prevDisabled">
+    Previous
+</a>
+<a asp-page="./Index"
+   asp-route-sortOrder="@Model.CurrentSort"
+   asp-route-pageIndex="@(Model.FeedView.PageIndex + 1)"
+   asp-route-currentFilter="@Model.CurrentFilter"
+   class="btn btn-primary @nextDisabled">
+    Next
+</a>

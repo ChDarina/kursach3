@@ -15,7 +15,7 @@
             @Html.DisplayNameFor(model => model.RolePlaysViewModel.MasterUsername)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.RolePlaysViewModel.MasterUsername)
+            <a asp-page="../UserAccount" asp-route-id="@Model.RolePlaysViewModel.MasterId">@Model.RolePlaysViewModel.MasterUsername</a> 
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.RolePlaysViewModel.Description)
@@ -24,7 +24,20 @@
             @Html.DisplayFor(model => model.RolePlaysViewModel.Description)
         </dd>
     </dl>
+</div>    
+<div>
+    <a asp-page="./Chat">Chat</a>
 </div>
+<form asp-page="./Details" method="get">
+    <div class="form-actions no-color">
+        <p>
+            Find by name:
+            <input type="text" name="SearchString" value="@Model.CurrentFilter" />
+            <input type="submit" value="Search" class="btn btn-primary" /> |
+            <a asp-page="./Details">Back to full List</a>
+        </p>
+    </div>
+</form>
 <h4>List of Players</h4>
 <table class="table">
     <thead>
@@ -42,7 +55,7 @@
 @foreach (var item in Model.CharactersViewModel) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.UserName)
+                <a asp-page="../UserAccount" asp-route-id="@item.UserId">@item.UserName</a> 
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.СharacterName)
@@ -56,14 +69,3 @@
         </tr>
 }
 </table>
-<div>
-
-@if (DetailsModel.RolePlayMasterName == User.Identity?.Name)
-    {    
-@*        <a asp-page="./Edit" asp-route-id="@Model.RolePlaysViewModel.Id">Edit</a> 
-        @:|*@
-        <a asp-page="./AddNewPlayer" asp-route-id="@Model.RolePlaysViewModel.Id">Add New Player</a> 
-        @:|
-    }
-    <a asp-page="./Chat">Chat</a>
-</div>

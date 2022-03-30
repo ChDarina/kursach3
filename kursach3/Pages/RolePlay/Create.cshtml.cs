@@ -10,9 +10,11 @@ using kursach3.Data;
 using kursach3.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using kursach3.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace kursach3.Pages.RolePlay
 {
+    [Authorize]
     public class CreateModel : PageModel
     {
         private readonly UserManager<ApplicationUser> _userManager;

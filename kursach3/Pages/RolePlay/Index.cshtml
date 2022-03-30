@@ -5,16 +5,15 @@
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 
-<p>
-    <a asp-page="Create">Create New</a>
-</p>
+<h1>My RolePlays</h1>
 <form asp-page="./Index" method="get">
     <div class="form-actions no-color">
         <p>
             Find by name:
             <input type="text" name="SearchString" value="@Model.CurrentFilter" />
             <input type="submit" value="Search" class="btn btn-primary" /> |
-            <a asp-page="./Index">Back to full List</a>
+            <a asp-page="./Index">Back to full List</a> |
+            <a asp-page="Create">Create New</a>
         </p>
     </div>
 </form>
@@ -22,22 +21,30 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.RolePlaysViewModel[0].Name)
+                <a asp-page="./Index" asp-route-sortOrder="@Model.NameSort" asp-route-currentFilter="@Model.CurrentFilter">
+                    @Html.DisplayNameFor(model => model.RolePlaysView[0].Name)
+                </a>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.RolePlaysViewModel[0].Description)
+                <a asp-page="./Index" asp-route-sortOrder="@Model.DescriptionSort" asp-route-currentFilter="@Model.CurrentFilter">
+                    @Html.DisplayNameFor(model => model.RolePlaysView[0].Description)
+                </a>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.RolePlaysViewModel[0].MasterUsername)
+                <a asp-page="./Index" asp-route-sortOrder="@Model.MasterUsernameSort" asp-route-currentFilter="@Model.CurrentFilter">
+                    @Html.DisplayNameFor(model => model.RolePlaysView[0].MasterUsername)
+                </a>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.RolePlaysViewModel[0].CharacterName)
+                <a asp-page="./Index" asp-route-sortOrder="@Model.CharacterNameSort" asp-route-currentFilter="@Model.CurrentFilter">
+                    @Html.DisplayNameFor(model => model.RolePlaysView[0].CharacterName)
+                </a>
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.RolePlaysViewModel) {
+@foreach (var item in Model.RolePlaysView) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
@@ -46,7 +53,7 @@
                 @Html.DisplayFor(modelItem => item.Description)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.MasterUsername)
+                <a asp-page="../UserAccount" asp-route-id="@item.MasterId">@item.MasterUsername</a> 
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.CharacterName)
@@ -66,3 +73,22 @@
 }
     </tbody>
 </table>
+@{
+    var prevDisabled = !Model.RolePlaysView.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.RolePlaysView.HasNextPage ? "disabled" : "";
+}
+
+<a asp-page="./FindPeople"
+   asp-route-sortOrder="@Model.CurrentSort"
+   asp-route-pageIndex="@(Model.RolePlaysView.PageIndex - 1)"
+   asp-route-currentFilter="@Model.CurrentFilter"
+   class="btn btn-primary @prevDisabled">
+    Previous
+</a>
+<a asp-page="./FindPeople"
+   asp-route-sortOrder="@Model.CurrentSort"
+   asp-route-pageIndex="@(Model.RolePlaysView.PageIndex + 1)"
+   asp-route-currentFilter="@Model.CurrentFilter"
+   class="btn btn-primary @nextDisabled">
+    Next
+</a>

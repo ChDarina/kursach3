@@ -10,9 +10,11 @@ using Microsoft.EntityFrameworkCore;
 using kursach3.Data;
 using kursach3.Models;
 using kursach3.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 
 namespace kursach3.Pages.RolePlay
 {
+    [Authorize]
     public class EditModel : PageModel
     {
         private readonly kursach3.Data.ApplicationDbContext _context;
@@ -50,10 +52,10 @@ namespace kursach3.Pages.RolePlay
             var user = await _context.Users.FirstOrDefaultAsync(m => m.Id == RolePlayTemp.MasterId);
             RolePlay.Master = user;
 
-            //if (!ModelState.IsValid)
-            //{
-            //    return Page();
-            //}
+            if (!ModelState.IsValid)
+            {
+                return Page();
+            }
 
             if (RolePlay != null)
             {

@@ -20,27 +20,49 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.AppUserViewModel[0].UserName)
+                <a asp-page="./FindPeople" asp-route-sortOrder="@Model.UserNameSort" asp-route-currentFilter="@Model.CurrentFilter">
+                    @Html.DisplayNameFor(model => model.AppUserView[0].UserName)
+                </a>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.AppUserViewModel[0].Bio)
+                <a asp-page="./FindPeople" asp-route-sortOrder="@Model.BioSort" asp-route-currentFilter="@Model.CurrentFilter">
+                    @Html.DisplayNameFor(model => model.AppUserView[0].Bio)
+                </a>
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.AppUserViewModel) {
+@foreach (var item in Model.AppUserView) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.UserName)
+                <a asp-page="./UserAccount" asp-route-id="@item.Id">@item.UserName</a> 
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Bio)
-            </td>
-            <td>
-                <a asp-page="./UserAccount" asp-route-id="@item.Id">View User Account</a> 
             </td>
         </tr>
 }
     </tbody>
 </table>
+
+@{
+    var prevDisabled = !Model.AppUserView.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.AppUserView.HasNextPage ? "disabled" : "";
+}
+
+<a asp-page="./FindPeople"
+   asp-route-sortOrder="@Model.CurrentSort"
+   asp-route-pageIndex="@(Model.AppUserView.PageIndex - 1)"
+   asp-route-currentFilter="@Model.CurrentFilter"
+   class="btn btn-primary @prevDisabled">
+    Previous
+</a>
+<a asp-page="./FindPeople"
+   asp-route-sortOrder="@Model.CurrentSort"
+   asp-route-pageIndex="@(Model.AppUserView.PageIndex + 1)"
+   asp-route-currentFilter="@Model.CurrentFilter"
+   class="btn btn-primary @nextDisabled">
+    Next
+</a>
+
