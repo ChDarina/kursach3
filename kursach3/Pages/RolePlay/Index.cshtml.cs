@@ -94,10 +94,10 @@ namespace kursach3.Pages.RolePlay
                 case "Description_desc":
                     roleplayIQ = roleplayIQ.OrderByDescending(s => s.Description);
                     break;
-                case "Date":
+                case "CharacterName":
                     roleplayIQ = roleplayIQ.OrderBy(s => s.CharacterName);
                     break;
-                case "Date_desc":
+                case "CharacterName_desc":
                     roleplayIQ = roleplayIQ.OrderByDescending(s => s.CharacterName);
                     break;
                 default:

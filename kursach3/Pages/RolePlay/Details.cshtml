@@ -28,11 +28,20 @@
 <form asp-page="./Details" method="get">
     <div class="form-actions no-color">
         <p>
-            Find by name:
+@*            Find:
             <input type="text" name="SearchString" value="@Model.CurrentFilter" />
-            <input type="submit" value="Search" class="btn btn-primary" /> |
-            <a asp-page="./Index">Back to full List</a> |
-            <a asp-page="./Chat">Chat</a>
+            <input type="submit" value="Search" class="btn btn-primary" /> |*@
+            @*<a asp-page="./Index">Back to full List</a> |*@
+            <a asp-page="./Chat">Chat</a> 
+        @if (Model.RolePlaysViewModel.MasterUsername == User.Identity?.Name)
+            {
+                @:||
+                <a asp-page="./Edit" asp-route-id="@Model.RolePlaysViewModel.Id">Edit</a> 
+                @:|
+                <a asp-page="./AddNewPlayer" asp-route-id="@Model.RolePlaysViewModel.Id">Add New Player</a> 
+                @:|
+                <a asp-page="./DeleteRolePlay" asp-route-id="@Model.RolePlaysViewModel.Id">Delete</a> 
+            }
         </p>
     </div>
 </form>
@@ -40,11 +49,15 @@
 <table class="table">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.CharactersViewModel[0].UserName)
+            <th>                
+@*                <a asp-page="./Details" asp-route-sortOrder="@Model.UsernameSort">     *@            
+                    @Html.DisplayNameFor(model => model.CharactersViewModel[0].UserName)
+@*                </a>*@
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CharactersViewModel[0].СharacterName)
+            <th> 
+@*                <a asp-page="./Details" asp-route-sortOrder="@Model.CharacterNameSort">*@
+                    @Html.DisplayNameFor(model => model.CharactersViewModel[0].СharacterName)                
+@*                </a> *@
             </th>
             <th></th>
         </tr>
@@ -62,8 +75,32 @@
                 @if (DetailsModel.RolePlayMasterName == User.Identity?.Name || item.UserName ==  User.Identity?.Name)
     {
                 <a asp-page="./EditCharacter" asp-route-roleplayid="@item.RolePlayId" asp-route-userid="@item.UserId" >Edit Character Name</a>
+
+                        if (DetailsModel.RolePlayMasterName != User.Identity?.Name)
+                        {                          
+                            @:|                            
+                            <a asp-page="./DeleteCharacter" asp-route-roleplayid="@item.RolePlayId" asp-route-userid="@item.UserId" >Delete Character</a>
+                        }
     }
             </td>
         </tr>
 }
 </table>
+@*@{
+    var prevDisabled = !Model.CharactersViewModel.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.CharactersViewModel.HasNextPage ? "disabled" : "";
+}
+<a asp-page="./Details"
+   asp-route-sortOrder="@Model.CurrentSort"
+   asp-route-pageIndex="@(Model.CharactersViewModel.PageIndex - 1)"
+   asp-route-currentFilter="@Model.CurrentFilter"
+   class="btn btn-primary @prevDisabled">
+    Previous
+</a>
+<a asp-page="./Details"
+   asp-route-sortOrder="@Model.CurrentSort"
+   asp-route-pageIndex="@(Model.CharactersViewModel.PageIndex + 1)"
+   asp-route-currentFilter="@Model.CurrentFilter"
+   class="btn btn-primary @nextDisabled">
+    Next
+</a>*@

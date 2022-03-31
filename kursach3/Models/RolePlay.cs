@@ -24,11 +24,10 @@ namespace kursach3.Models
         [StringLength(450)]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public string MasterId { get; set; }
-        [Required]
         [ForeignKey("MasterId")]
-        public virtual ApplicationUser Master { get; set; }
-        public virtual ICollection<Character> Characters { get; set; }
-        public virtual ICollection<Room> Rooms { get; set; }
-        public virtual ICollection<Message> Messages { get; set; }
+        public virtual ApplicationUser? Master { get; set; }
+        public virtual ICollection<Character>? Characters { get; set; }
+        public virtual ICollection<Room>? Rooms { get; set; }
+        public virtual ICollection<Message>? Messages { get; set; }
     }
 }

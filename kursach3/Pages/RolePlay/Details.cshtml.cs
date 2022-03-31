@@ -25,9 +25,7 @@ namespace kursach3.Pages.RolePlay
             _context = context;
             _configuration = configuration;
         }
-        public string NameSort { get; set; }
-        public string DescriptionSort { get; set; }
-        public string MasterUsernameSort { get; set; }
+        public string UsernameSort { get; set; }
         public string CharacterNameSort { get; set; }
 
         public string CurrentFilter { get; set; }
@@ -38,11 +36,16 @@ namespace kursach3.Pages.RolePlay
         public RolePlaysViewModel RolePlaysViewModel { get; set; }
         public Models.RolePlay RolePlay { get; set; }
         public Models.ApplicationUser User { get; set; }
-        public IList<kursach3.ViewModels.CharacterViewModel> CharactersViewModel { get; set; }
+        public List<CharacterViewModel> CharactersViewModel { get; set; }
         public IList<kursach3.Models.Character> Characters { get; set; }
 
-        public async Task GetLists(int id, string sortOrder, string currentFilter, string searchString, int? pageIndex)
+        public async Task<IActionResult> OnGetAsync(int id, string sortOrder, string currentFilter, string searchString, int? pageIndex)
         {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
             RolePlay = await _context.RolePlays.FirstOrDefaultAsync(m => m.RolePlayId == id);
             RolePlayName = RolePlay.Name;
             User = await _context.ApplicationUsers.FirstOrDefaultAsync(m => m.Id == RolePlay.MasterId);
@@ -56,12 +59,12 @@ namespace kursach3.Pages.RolePlay
             };
 
             var Characterstemp = await _context.Characters.ToListAsync();
-            CharactersViewModel = new List<CharacterViewModel>();
+            var CharactersViewModel_temp = new List<CharacterViewModel>();
             Characters = Characterstemp.Where(m => m.RolePlayId == id).ToList();
             for (int i = 0; i < Characters.Count; i++)
             {
                 var user = await _context.ApplicationUsers.FirstOrDefaultAsync(m => m.Id == Characters[i].UserId);
-                CharactersViewModel.Add(new CharacterViewModel
+                CharactersViewModel_temp.Add(new CharacterViewModel
                 {
                     RolePlayId = id,
                     RolePlayName = RolePlay.Name,
@@ -70,16 +73,54 @@ namespace kursach3.Pages.RolePlay
                     СharacterName = Characters[i].СharacterName
                 });
             }
+            CharactersViewModel = CharactersViewModel_temp;
 
-        }
-        public async Task<IActionResult> OnGetAsync(int? id, string sortOrder, string currentFilter, string searchString, int? pageIndex)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            //CurrentSort = sortOrder;
+            //UsernameSort = String.IsNullOrEmpty(sortOrder) ? "Username" : "Username_desc";
+            //CharacterNameSort = String.IsNullOrEmpty(sortOrder) ? "CharacterName" : "CharacterName_desc";
 
-            await GetLists((int)id, sortOrder, currentFilter, searchString, pageIndex);
+            //if (searchString != null)
+            //{
+            //    pageIndex = 1;
+            //}
+            //else
+            //{
+            //    searchString = currentFilter;
+            //}
+
+            //CurrentFilter = searchString;
+
+
+            //IEnumerable<CharacterViewModel> characterIQ = from s in CharactersViewModel_temp
+            //                                              select s;
+
+            //if (!String.IsNullOrEmpty(searchString))
+            //{
+            //    characterIQ = characterIQ.Where(s => s.UserName.Contains(searchString)
+            //                           || s.СharacterName.Contains(searchString));
+            //}
+
+            //switch (sortOrder)
+            //{
+            //    case "Username":
+            //        characterIQ = characterIQ.OrderBy(s => s.UserName);
+            //        break;
+            //    case "Username_desc":
+            //        characterIQ = characterIQ.OrderByDescending(s => s.UserName);
+            //        break;
+            //    case "CharacterName":
+            //        characterIQ = characterIQ.OrderBy(s => s.СharacterName);
+            //        break;
+            //    case "CharacterName_desc":
+            //        characterIQ = characterIQ.OrderByDescending(s => s.СharacterName);
+            //        break;
+            //    default:
+            //        characterIQ = characterIQ.OrderBy(s => s.UserName);
+            //        break;
+            //}
+            //var pageSize = _configuration.GetValue("PageSize", 10);
+            //CharactersViewModel = PaginatedList<CharacterViewModel>.Create(
+            //    characterIQ, pageIndex ?? 1, pageSize);
 
             if (RolePlaysViewModel == null)
             {

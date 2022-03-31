@@ -9,7 +9,7 @@
 <form asp-page="./Index" method="get">
     <div class="form-actions no-color">
         <p>
-            Find by name:
+            Find by Name and Description:
             <input type="text" name="SearchString" value="@Model.CurrentFilter" />
             <input type="submit" value="Search" class="btn btn-primary" /> |
             <a asp-page="./Index">Back to full List</a> |
@@ -58,16 +58,17 @@
             <td>
                 @Html.DisplayFor(modelItem => item.CharacterName)
             </td>
-            <td>            
+            <td>                      
+                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-page="./Chat" asp-route-id="@item.Id">Chat</a>   ||   
             @if (item.MasterUsername == User.Identity?.Name)
                     {
-@*                         <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> 
-                         @:|*@
+                         <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> 
+                         @:|
                          <a asp-page="./AddNewPlayer" asp-route-id="@item.Id">Add New Player</a> 
                          @:|
+                         <a asp-page="./DeleteRolePlay" asp-route-id="@item.Id">Delete</a> 
                     }
-                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-page="./Chat" asp-route-id="@item.Id">Chat</a>
             </td>
         </tr>
 }
