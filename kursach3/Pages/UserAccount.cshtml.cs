@@ -26,7 +26,6 @@ namespace kursach3.Pages
             _userManager = userManager;
         }
         [TempData]
-        public string StatusMessage { get; set; }
         public static ApplicationUser UserFriend { get; set; }
         public UserAccountViewModel UserAccountViewModel { get; set; }
         public static Friend Friend { get; set; }
@@ -67,7 +66,6 @@ namespace kursach3.Pages
                 _context.Entry(Friend.UserFriend).State = EntityState.Unchanged;
                 _context.Friends.Add(Friend);
                 await _context.SaveChangesAsync();
-                StatusMessage = "You have added a new friend!";
                 return Redirect("/Friends");
             }
             else
@@ -76,7 +74,6 @@ namespace kursach3.Pages
                 Friend.Timestamp = DateTime.Now;
                 _context.Attach(Friend).State = EntityState.Modified;
                 await _context.SaveChangesAsync();
-                StatusMessage = "You have confirmed adding a new friend!";
                 return Redirect("/Friends");
             }           
         }

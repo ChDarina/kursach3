@@ -32,7 +32,7 @@
             <input type="text" name="SearchString" value="@Model.CurrentFilter" />
             <input type="submit" value="Search" class="btn btn-primary" /> |*@
             @*<a asp-page="./Index">Back to full List</a> |*@
-            <a asp-page="./Chat">Chat</a> 
+            <a asp-page="./Chat" asp-route-id="@Model.RolePlaysViewModel.Id">Chat</a>
         @if (Model.RolePlaysViewModel.MasterUsername == User.Identity?.Name)
             {
                 @:||
@@ -76,7 +76,7 @@
     {
                 <a asp-page="./EditCharacter" asp-route-roleplayid="@item.RolePlayId" asp-route-userid="@item.UserId" >Edit Character Name</a>
 
-                        if (DetailsModel.RolePlayMasterName != User.Identity?.Name)
+                        if (item.UserName != User.Identity?.Name)
                         {                          
                             @:|                            
                             <a asp-page="./DeleteCharacter" asp-route-roleplayid="@item.RolePlayId" asp-route-userid="@item.UserId" >Delete Character</a>

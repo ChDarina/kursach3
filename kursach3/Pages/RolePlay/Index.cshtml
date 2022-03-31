@@ -60,9 +60,10 @@
             </td>
             <td>                      
                 <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-page="./Chat" asp-route-id="@item.Id">Chat</a>   ||   
+                <a asp-page="./Chat" asp-route-id="@item.Id">Chat</a>    
             @if (item.MasterUsername == User.Identity?.Name)
                     {
+                         @:||
                          <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> 
                          @:|
                          <a asp-page="./AddNewPlayer" asp-route-id="@item.Id">Add New Player</a> 
